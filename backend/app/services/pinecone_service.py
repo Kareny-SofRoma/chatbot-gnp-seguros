@@ -10,8 +10,11 @@ class PineconeService:
         self.index_name = settings.PINECONE_INDEX_NAME
         self.index = None
         
-    def initialize_index(self, dimension: int = 1536):
+    def initialize_index(self, dimension: int = None):
         """Initialize Pinecone index if it doesn't exist"""
+        if dimension is None:
+            dimension = settings.EMBEDDING_DIMENSION
+            
         try:
             # Check if index exists
             existing_indexes = self.pc.list_indexes()
@@ -25,7 +28,7 @@ class PineconeService:
                     metric="cosine",
                     spec=ServerlessSpec(
                         cloud="aws",
-                        region="us-east-1"
+                        region=settings.PINECONE_ENVIRONMENT
                     )
                 )
                 logger.info(f"Index {self.index_name} created successfully")
@@ -55,8 +58,11 @@ class PineconeService:
             logger.error(f"Error upserting vectors: {str(e)}")
             raise
     
-    def query_vectors(self, query_vector: list, top_k: int = 5, filter_dict: dict = None):
+    def query_vectors(self, query_vector: list, top_k: int = None, filter_dict: dict = None):
         """Query vectors from Pinecone"""
+        if top_k is None:
+            top_k = settings.TOP_K
+            
         try:
             index = self.get_index()
             results = index.query(

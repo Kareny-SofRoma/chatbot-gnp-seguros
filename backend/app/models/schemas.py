@@ -48,3 +48,26 @@ class DocumentSchema(BaseModel):
     
     class Config:
         from_attributes = True
+
+class FAQCreate(BaseModel):
+    questions: List[str] = Field(..., description="List of FAQ questions to process")
+    category: Optional[str] = Field("GMM", description="Category for these FAQs")
+
+class FAQResponse(BaseModel):
+    id: UUID
+    question: str
+    answer: str
+    category: Optional[str]
+    sources: Optional[List[dict]] = []
+    views_count: int
+    created_at: datetime
+    updated_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+class FAQBatchProcessResponse(BaseModel):
+    processed: int
+    failed: int
+    total: int
+    faqs: List[FAQResponse]

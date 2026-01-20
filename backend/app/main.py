@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import engine, Base
 from app.core.logger import get_logger
-from app.api import chat
+from app.api import chat, faq
 
 logger = get_logger()
 
@@ -27,6 +27,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(chat.router)
+app.include_router(faq.router)
 
 @app.get("/")
 async def root():

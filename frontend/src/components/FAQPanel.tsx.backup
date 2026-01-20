@@ -1,0 +1,189 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { HelpCircle, X, ChevronDown, ChevronUp } from 'lucide-react';
+
+interface FAQ {
+  id: string;
+  question: string;
+  answer: string;
+  category: string;
+  sources: Array<{
+    filename: string;
+    page: string;
+    score: number;
+  }>;
+  views_count: number;
+}
+
+interface FAQPanelProps {
+  onSelectFAQ: (question: string, answer: string) => void;
+}
+
+export default function FAQPanel({ onSelectFAQ }: FAQPanelProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [faqs, setFaqs] = useState<FAQ[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    if (isOpen && faqs.length === 0) {
+      loadFAQs();
+    }
+  }, [isOpen]);
+
+  const loadFAQs = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/faq/list?category=GMM`);
+      if (response.ok) {
+        const data = await response.json();
+        setFaqs(data);
+      }
+    } catch (error) {
+      console.error('Error loading FAQs:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFAQClick = async (faq: FAQ) => {
+    // Expand/collapse the FAQ
+    if (expandedFAQ === faq.id) {
+      setExpandedFAQ(null);
+    } else {
+      setExpandedFAQ(faq.id);
+      
+      // Increment view count
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/faq/${faq.id}`);
+      } catch (error) {
+        console.error('Error updating view count:', error);
+      }
+    }
+  };
+
+  const handleUseFAQ = (faq: FAQ) => {
+    onSelectFAQ(faq.question, faq.answer);
+    setIsOpen(false);
+  };
+
+  const filteredFAQs = faqs.filter(faq =>
+    faq.question.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <>
+      {/* FAQs Button */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className="fixed bottom-24 right-6 bg-gradient-to-r from-[#312b66] to-[#67528a] text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 z-40"
+        title="Preguntas Frecuentes"
+      >
+        <HelpCircle className="w-6 h-6" />
+      </button>
+
+      {/* FAQs Panel */}
+      {isOpen && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-[#312b66] to-[#67528a] text-white p-6 rounded-t-2xl flex justify-between items-center">
+              <div>
+                <h2 className="text-2xl font-bold">Preguntas Frecuentes</h2>
+                <p className="text-white/80 text-sm mt-1">Respuestas instantáneas sobre GMM</p>
+              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="hover:bg-white/20 p-2 rounded-lg transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Search Bar */}
+            <div className="p-4 border-b">
+              <input
+                type="text"
+                placeholder="Buscar pregunta..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#312b66] transition-colors"
+              />
+            </div>
+
+            {/* FAQs List */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-3">
+              {loading ? (
+                <div className="text-center py-12">
+                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#312b66] border-t-transparent"></div>
+                  <p className="mt-4 text-gray-600">Cargando preguntas frecuentes...</p>
+                </div>
+              ) : filteredFAQs.length === 0 ? (
+                <div className="text-center py-12 text-gray-500">
+                  <HelpCircle className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                  <p>No se encontraron preguntas</p>
+                </div>
+              ) : (
+                filteredFAQs.map((faq) => (
+                  <div
+                    key={faq.id}
+                    className="border-2 border-gray-200 rounded-lg overflow-hidden hover:border-[#312b66] transition-colors"
+                  >
+                    <button
+                      onClick={() => handleFAQClick(faq)}
+                      className="w-full p-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    >
+                      <span className="font-medium text-gray-800 flex-1 pr-4">
+                        {faq.question}
+                      </span>
+                      {expandedFAQ === faq.id ? (
+                        <ChevronUp className="w-5 h-5 text-[#312b66] flex-shrink-0" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                      )}
+                    </button>
+
+                    {expandedFAQ === faq.id && (
+                      <div className="p-4 bg-gray-50 border-t-2 border-gray-200">
+                        <p className="text-gray-700 whitespace-pre-wrap mb-4">
+                          {faq.answer}
+                        </p>
+                        
+                        {faq.sources.length > 0 && (
+                          <div className="mt-3 pt-3 border-t border-gray-300">
+                            <p className="text-xs font-semibold text-gray-600 mb-2">Fuentes:</p>
+                            <div className="space-y-1">
+                              {faq.sources.map((source, idx) => (
+                                <p key={idx} className="text-xs text-gray-500">
+                                  • {source.filename} (Página {source.page}) - Relevancia: {(source.score * 100).toFixed(0)}%
+                                </p>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        <button
+                          onClick={() => handleUseFAQ(faq)}
+                          className="mt-4 w-full bg-gradient-to-r from-[#312b66] to-[#67528a] text-white py-2 px-4 rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
+                        >
+                          Usar esta respuesta en el chat
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="p-4 border-t bg-gray-50 text-center text-sm text-gray-600">
+              <p>{filteredFAQs.length} {filteredFAQs.length === 1 ? 'pregunta' : 'preguntas'} disponibles</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

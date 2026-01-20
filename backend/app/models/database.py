@@ -35,4 +35,18 @@ class Document(Base):
     processed = Column(Boolean, default=False)
     processed_at = Column(DateTime, nullable=True)
     chunk_count = Column(Integer, default=0)
-    metadata = Column(Text, nullable=True)  # JSON string
+    doc_metadata = Column(Text, nullable=True)  # JSON string
+
+class FAQ(Base):
+    __tablename__ = "faqs"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    question = Column(Text, nullable=False, unique=True)
+    answer = Column(Text, nullable=False)
+    category = Column(String(100), nullable=True)  # e.g., "GMM", "Autos", etc.
+    sources = Column(Text, nullable=True)  # JSON string with sources
+    tokens_used = Column(Integer, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    is_active = Column(Boolean, default=True)
+    views_count = Column(Integer, default=0)

@@ -12,8 +12,8 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     REDIS_URL: str
     
-    # Pinecone
-    PINECONE_INDEX_NAME: str = "gnp-seguros"
+    # Pinecone (ACTUALIZADO)
+    PINECONE_INDEX_NAME: str = "chatbot-pdfs"
     PINECONE_ENVIRONMENT: str = "us-east-1"
     
     # App
@@ -26,8 +26,9 @@ class Settings(BaseSettings):
     TEMPERATURE: float = 0.2
     MAX_TOKENS: int = 2000
     
-    # RAG
-    EMBEDDING_MODEL: str = "text-embedding-3-small"
+    # RAG (ACTUALIZADO para text-embedding-3-large)
+    EMBEDDING_MODEL: str = "text-embedding-3-large"
+    EMBEDDING_DIMENSION: int = 3072
     CHUNK_SIZE: int = 1000
     CHUNK_OVERLAP: int = 200
     TOP_K: int = 5

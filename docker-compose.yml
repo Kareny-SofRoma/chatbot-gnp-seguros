@@ -48,7 +48,7 @@ services:
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - PINECONE_API_KEY=${PINECONE_API_KEY}
-      - PINECONE_INDEX_NAME=gnp-seguros
+      - PINECONE_INDEX_NAME=chatbot-pdfs
       - ENVIRONMENT=development
       - LOG_LEVEL=INFO
     volumes:

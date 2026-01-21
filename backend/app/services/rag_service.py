@@ -19,6 +19,15 @@ class RAGService:
         self.redis = get_redis()
         self.cache_ttl = 86400  # 24 horas (queries similares son comunes)
     
+    def _is_greeting(self, message: str) -> bool:
+        """Detect if message is a greeting"""
+        greetings = [
+            'hola', 'buenos días', 'buenas tardes', 'buenas noches',
+            'qué tal', 'saludos', 'hey', 'hi', 'hello', 'buen día'
+        ]
+        msg_lower = message.lower().strip()
+        return any(greeting in msg_lower for greeting in greetings)
+    
     def query(
         self,
         user_query: str,
@@ -37,6 +46,20 @@ class RAGService:
                     message="La consulta no puede estar vacía",
                     details={"type": "validation_error"}
                 )
+            
+            # Detectar saludos y responder directamente
+            if self._is_greeting(user_query):
+                logger.info("Greeting detected, responding directly")
+                try:
+                    response, tokens_used = self.llm_service.generate_response(
+                        user_message=user_query,
+                        context="",  # Sin contexto para saludos
+                        conversation_history=conversation_history
+                    )
+                    return (response, [], tokens_used)
+                except Exception as e:
+                    logger.error(f"LLM error on greeting: {str(e)}")
+                    raise handle_service_error("GPT-4o API", e)
             
             # Check cache FIRST (fastest path)
             cache_key = self._generate_cache_key(user_query)

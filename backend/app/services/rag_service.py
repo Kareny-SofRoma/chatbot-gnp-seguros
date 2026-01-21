@@ -28,6 +28,16 @@ class RAGService:
         msg_lower = message.lower().strip()
         return any(greeting in msg_lower for greeting in greetings)
     
+    def _is_portal_question(self, message: str) -> bool:
+        """Detect if message is about portals"""
+        portal_keywords = [
+            'portal', 'portales', 'intermediario', 'intermediarios',
+            'portal de ideas', 'portal idea', 'plataforma',
+            'donde cotizar', 'dónde cotizar', 'donde cotizo'
+        ]
+        msg_lower = message.lower().strip()
+        return any(keyword in msg_lower for keyword in portal_keywords)
+    
     def query(
         self,
         user_query: str,
@@ -59,6 +69,21 @@ class RAGService:
                     return (response, [], tokens_used)
                 except Exception as e:
                     logger.error(f"LLM error on greeting: {str(e)}")
+                    raise handle_service_error("GPT-4o API", e)
+            
+            # Detectar preguntas sobre portales y responder con contexto del system prompt
+            if self._is_portal_question(user_query):
+                logger.info("Portal question detected, using system prompt context")
+                try:
+                    # El system prompt ya tiene información sobre portales
+                    response, tokens_used = self.llm_service.generate_response(
+                        user_message=user_query,
+                        context="",  # El contexto de portales está en el system prompt
+                        conversation_history=conversation_history
+                    )
+                    return (response, [], tokens_used)
+                except Exception as e:
+                    logger.error(f"LLM error on portal question: {str(e)}")
                     raise handle_service_error("GPT-4o API", e)
             
             # Check cache FIRST (fastest path)

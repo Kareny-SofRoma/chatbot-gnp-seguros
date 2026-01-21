@@ -21,8 +21,8 @@ COPY . .
 # Create data directory
 RUN mkdir -p /app/data/pdfs
 
-# Expose port
+# Expose port (Railway will inject PORT env var)
 EXPOSE 8000
 
-# Run application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run application with PORT variable support for Railway
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}

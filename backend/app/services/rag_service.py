@@ -3,6 +3,7 @@ from app.services.pinecone_service import pinecone_service
 from app.services.llm_service import llm_service
 from app.core.redis_client import get_redis
 from app.core.logger import get_logger
+from app.core.exceptions import RAGException, LLMException, CacheException, handle_service_error
 from typing import List, Dict, Tuple
 import json
 import hashlib
@@ -30,6 +31,13 @@ class RAGService:
         start_time = time.time()
         
         try:
+            # Validate input
+            if not user_query or not user_query.strip():
+                raise RAGException(
+                    message="La consulta no puede estar vacía",
+                    details={"type": "validation_error"}
+                )
+            
             # Check cache FIRST (fastest path)
             cache_key = self._generate_cache_key(user_query)
             cached_response = self._get_from_cache(cache_key)
@@ -44,28 +52,48 @@ class RAGService:
             search_queries = self._expand_query(user_query)
             logger.info(f"Expanded to {len(search_queries)} queries")
             
-            # Búsqueda paralela (simular con secuencial por ahora)
+            # Búsqueda con manejo de errores
             all_chunks = []
             seen_ids = set()
             
-            for sq in search_queries:
-                query_embedding = self.embedding_service.generate_embedding(sq)
-                
-                results = self.pinecone_service.query_vectors(
-                    query_vector=query_embedding,
-                    top_k=15  # 15 por query
+            try:
+                for sq in search_queries:
+                    # Generate embedding
+                    try:
+                        query_embedding = self.embedding_service.generate_embedding(sq)
+                    except Exception as e:
+                        logger.error(f"Embedding error: {str(e)}")
+                        raise handle_service_error("OpenAI Embeddings", e)
+                    
+                    # Query Pinecone
+                    try:
+                        results = self.pinecone_service.query_vectors(
+                            query_vector=query_embedding,
+                            top_k=15  # 15 por query
+                        )
+                    except Exception as e:
+                        logger.error(f"Pinecone query error: {str(e)}")
+                        raise handle_service_error("Pinecone", e)
+                    
+                    for match in results.matches:
+                        if match.id not in seen_ids and match.score > 0.45:  # Threshold más bajo
+                            seen_ids.add(match.id)
+                            all_chunks.append({
+                                'id': match.id,
+                                'text': match.metadata.get('text', ''),
+                                'score': match.score,
+                                'source': match.metadata.get('source', 'Manual GNP'),
+                                'doc_type': match.metadata.get('doc_type', 'pdf')
+                            })
+            
+            except RAGException:
+                raise  # Re-raise our custom exceptions
+            except Exception as e:
+                logger.error(f"Search error: {str(e)}")
+                raise RAGException(
+                    message="Error al buscar en la base de conocimiento",
+                    details={"error": str(e)}
                 )
-                
-                for match in results.matches:
-                    if match.id not in seen_ids and match.score > 0.45:  # Threshold más bajo
-                        seen_ids.add(match.id)
-                        all_chunks.append({
-                            'id': match.id,
-                            'text': match.metadata.get('text', ''),
-                            'score': match.score,
-                            'source': match.metadata.get('source', 'Manual GNP'),
-                            'doc_type': match.metadata.get('doc_type', 'pdf')
-                        })
             
             # Priorizar documentos sintéticos (tienen info consolidada)
             all_chunks.sort(key=lambda x: (
@@ -78,7 +106,12 @@ class RAGService:
             
             if not top_chunks:
                 logger.warning("No relevant chunks found")
-                return "Lo siento, no encontré información sobre esa pregunta en los manuales de GNP.", [], 0
+                return (
+                    "Lo siento, no encontré información relevante sobre esa pregunta en los manuales de GNP. "
+                    "¿Podrías reformular tu pregunta o ser más específico?",
+                    [],
+                    0
+                )
             
             # Construir contexto
             context_text = "\n\n---\n\n".join([c['text'] for c in top_chunks])
@@ -86,12 +119,16 @@ class RAGService:
             logger.info(f"Found {len(top_chunks)} chunks (best: {top_chunks[0]['score']:.3f})")
             logger.info(f"Context size: {len(context_text)} chars")
             
-            # Generar respuesta
-            response, tokens_used = self.llm_service.generate_response(
-                user_message=user_query,
-                context=context_text,
-                conversation_history=conversation_history
-            )
+            # Generar respuesta con manejo de errores
+            try:
+                response, tokens_used = self.llm_service.generate_response(
+                    user_message=user_query,
+                    context=context_text,
+                    conversation_history=conversation_history
+                )
+            except Exception as e:
+                logger.error(f"LLM error: {str(e)}")
+                raise handle_service_error("Claude API", e)
             
             # Preparar sources
             sources = [{
@@ -109,9 +146,15 @@ class RAGService:
             
             return result
             
-        except Exception as e:
-            logger.error(f"Error in RAG query: {str(e)}")
+        except (RAGException, LLMException):
+            # Re-raise custom exceptions
             raise
+        except Exception as e:
+            logger.error(f"Unexpected error in RAG query: {str(e)}")
+            raise RAGException(
+                message="Ocurrió un error al procesar tu consulta",
+                details={"error": str(e)}
+            )
     
     def _expand_query(self, query: str) -> List[str]:
         """Smart query expansion"""
@@ -154,17 +197,25 @@ class RAGService:
         return f"rag:v2:{query_hash}"  # v2 para nueva versión
     
     def _get_from_cache(self, cache_key: str):
-        """Get from cache"""
+        """Get from cache with error handling"""
         try:
             cached = self.redis.get(cache_key)
             if cached:
                 return json.loads(cached)
+        except json.JSONDecodeError as e:
+            logger.warning(f"Cache JSON decode error: {str(e)}")
+            # Delete corrupted cache entry
+            try:
+                self.redis.delete(cache_key)
+            except:
+                pass
         except Exception as e:
             logger.warning(f"Cache get error: {str(e)}")
+            # Cache errors should not break the app
         return None
     
     def _save_to_cache(self, cache_key: str, result):
-        """Save to cache"""
+        """Save to cache with error handling"""
         try:
             self.redis.setex(
                 cache_key,
@@ -173,5 +224,6 @@ class RAGService:
             )
         except Exception as e:
             logger.warning(f"Cache save error: {str(e)}")
+            # Cache errors should not break the app
 
 rag_service = RAGService()

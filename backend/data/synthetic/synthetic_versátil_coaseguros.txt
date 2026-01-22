@@ -1,0 +1,52 @@
+═══════════════════════════════════════════════════════════════
+COASEGUROS - PRODUCTO VERSÁTIL
+═══════════════════════════════════════════════════════════════
+
+DOCUMENTO SINTÉTICO CONSOLIDADO
+
+Este documento consolida la información sobre coaseguros para el producto Versátil, incluyendo detalles sobre deducibles, participación del cliente y de GNP, y beneficios adicionales.
+
+═══════════════════════════════════════════════════════════════
+
+DEDUCIBLES Y COASEGUROS:
+
+- **Edades de Cobertura:**
+  - Aceptación desde el nacimiento hasta los 64 años de edad.
+
+- **Deducible Extranjero:**
+  - Opciones de 0, 500, 1,000, 1,500, 2,000, 2,500 dólares.
+
+- **Participación del Cliente:**
+  - Deducible + Coaseguro.
+  - Ejemplo de reclamación de 30,000 dólares:
+    - Deducible: 1,000 dólares.
+    - Saldo después del deducible: 29,000 dólares.
+    - % de Coaseguro: 10%.
+    - Total de Coaseguro: 2,900 dólares.
+    - Coaseguro a pagar: 2,900 dólares.
+    - Participación total del cliente: 3,900 dólares.
+
+- **Participación de GNP:**
+  - En el ejemplo, GNP cubre 26,100 dólares del gasto total.
+
+═══════════════════════════════════════════════════════════════
+
+PERÍODOS DE ESPERA:
+
+- **SIDA:**
+  - Cubierto siempre y cuando el virus no haya sido detectado antes o durante el período de espera de 48 meses.
+
+═══════════════════════════════════════════════════════════════
+
+CONSIDERACIONES IMPORTANTES:
+
+- Los deducibles y coaseguros son aplicables según las condiciones específicas del plan contratado.
+- La participación del cliente incluye tanto el deducible como el coaseguro.
+- Los beneficios y coberturas pueden variar según el plan y la ubicación del asegurado.
+
+═══════════════════════════════════════════════════════════════
+
+PRODUCTO: versátil
+TIPO: Gastos Médicos Mayores Individual
+CATEGORÍA: coaseguros
+DOCUMENTO: Síntesis completa

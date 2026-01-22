@@ -1,0 +1,46 @@
+═══════════════════════════════════════════════════════════════
+PERIODOS DE ESPERA - PRODUCTO PREMIUM
+═══════════════════════════════════════════════════════════════
+
+DOCUMENTO SINTÉTICO CONSOLIDADO
+
+Este documento consolida los periodos de espera aplicables al producto Premium, detallando los tiempos específicos para diversas coberturas y procedimientos médicos.
+
+═══════════════════════════════════════════════════════════════
+
+PERIODOS DE ESPERA:
+
+• **Cobertura del recién nacido:**
+  - Indemnización por parto normal y cesárea: $58,000 pesos
+  - Cobertura provisional automática durante los primeros 90 días de nacido
+
+• **Cirugía fetal:**
+  - 6 meses
+
+• **Trasplantes (hígado, riñón, corazón, células madre y médula ósea):**
+  - 12 meses
+
+• **Cáncer:**
+  - 24 meses
+
+• **Padecimientos específicos:**
+  - Nariz, senos paranasales, amígdalas, adenoides, hernias, tumoraciones mamarias, anorrectales, prostáticos, ginecológicos, várices, insuficiencia del piso perineal, vesícula, vías biliares, cataratas, litiasis renal y en vías urinarias, rodillas, hombro, enfermedades ácido-pépticas y columna vertebral: 24 meses
+  - Cirugía bariátrica, circuncisión y sus complicaciones, cánceres ginecológicos, prostáticos, mamarios, de amígdalas y vesícula biliar: 48 meses
+
+• **Síndrome de Inmunodeficiencia Adquirida (SIDA):**
+  - 48 meses
+
+═══════════════════════════════════════════════════════════════
+
+CONSIDERACIONES IMPORTANTES:
+
+• Los periodos de espera están sujetos a las Condiciones Generales del producto.
+• La cobertura del recién nacido es gratuita desde el nacimiento hasta la renovación.
+• Las condiciones específicas de cada padecimiento deben ser consultadas en las Condiciones Generales.
+
+═══════════════════════════════════════════════════════════════
+
+PRODUCTO: premium
+TIPO: Gastos Médicos Mayores
+CATEGORÍA: periodos_espera
+DOCUMENTO: Síntesis completa

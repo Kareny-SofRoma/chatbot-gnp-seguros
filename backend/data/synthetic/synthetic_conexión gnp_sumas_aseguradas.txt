@@ -1,0 +1,46 @@
+═══════════════════════════════════════════════════════════════
+SUMAS ASEGURADAS Y LÍMITES - PRODUCTO CONEXIÓN GNP
+═══════════════════════════════════════════════════════════════
+
+DOCUMENTO SINTÉTICO CONSOLIDADO
+
+Este documento sintetiza la información sobre las sumas aseguradas y límites del producto Conexión GNP, incluyendo detalles sobre coaseguros y topes.
+
+═══════════════════════════════════════════════════════════════
+
+SUMAS ASEGURADAS:
+
+- Suma Asegurada: $159,000,000 o $84,800,000, dependiendo del tipo de participación elegida en el plan individual garantizado.
+- Suma Asegurada única por padecimiento, en exceso de la Póliza colectiva.
+- Ampliación de Suma Asegurada en Conexión GNP Personaliza, si el monto de protección del Seguro Colectivo no es suficiente.
+
+═══════════════════════════════════════════════════════════════
+
+COASEGUROS Y TOPES:
+
+- Plan individual de participación variable:
+  - Coaseguro: 10%, Tope de Coaseguro: $69,000
+  - Coaseguro: 15%, Tope de Coaseguro: $64,000
+
+- Deducibles en exceso:
+  - $641,000
+  - $1,034,000
+  - $1,929,000
+  - $3,869,000
+  - $6,466,000
+  - $127,200,000
+
+═══════════════════════════════════════════════════════════════
+
+CONSIDERACIONES IMPORTANTES:
+
+- Elegir el deducible en exceso inferior más cercano a la Suma Asegurada del Plan Colectivo.
+- La póliza se rige por las Condiciones Generales del producto disponibles en gnp.com.mx.
+- Este material es de carácter informativo.
+
+═══════════════════════════════════════════════════════════════
+
+PRODUCTO: conexión gnp
+TIPO: Gastos Médicos Mayores
+CATEGORÍA: sumas_aseguradas
+DOCUMENTO: Síntesis completa

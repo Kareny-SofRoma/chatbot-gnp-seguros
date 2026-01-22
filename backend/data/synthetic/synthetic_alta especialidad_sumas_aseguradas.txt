@@ -1,0 +1,47 @@
+═══════════════════════════════════════════════════════════════
+SUMAS ASEGURADAS Y LÍMITES - PRODUCTO ALTA ESPECIALIDAD
+═══════════════════════════════════════════════════════════════
+
+DOCUMENTO SINTÉTICO CONSOLIDADO
+
+Este documento consolida la información sobre sumas aseguradas y límites para el producto de alta especialidad, destacando los topes de coaseguro y deducibles aplicables.
+
+═══════════════════════════════════════════════════════════════
+
+SUMAS ASEGURADAS:
+
+• Tope de Coaseguro: 100,000 a 10,000,000 dólares
+• Suma Asegurada por padecimiento o por año calendario
+• Suma Asegurada máxima por año calendario
+
+═══════════════════════════════════════════════════════════════
+
+DEDUCIBLES:
+
+• Nacional y Extranjero: 
+  - 500 a 1,500 dólares
+  - 500 a 3,000 dólares
+  - 500 a 5,000 dólares
+  - 500 a 10,000 dólares
+  - 800 a 10,000 dólares
+  - 1,000 a 10,000 dólares
+  - 1,500 a 5,000 dólares
+  - 2,000 a 10,000 dólares
+  - 3,000 a 10,000 dólares
+  - 5,000 a 10,000 dólares
+  - 10,000 dólares
+
+═══════════════════════════════════════════════════════════════
+
+CONSIDERACIONES IMPORTANTES:
+
+• Los negocios con rango de edad entre 65 y 70 años estarán sujetos a contratación de deducible anual y entrega de información médica necesaria.
+• Opciones exclusivas para año calendario.
+• Participación del cliente en el coaseguro es de 14,500 dólares, con una participación de GNP de 885,500 dólares.
+
+═══════════════════════════════════════════════════════════════
+
+PRODUCTO: alta especialidad
+TIPO: Gastos Médicos Mayores Individual
+CATEGORÍA: sumas_aseguradas
+DOCUMENTO: Síntesis completa

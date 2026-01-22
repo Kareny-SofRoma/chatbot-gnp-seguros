@@ -1,0 +1,35 @@
+
+================================================================================
+REPORTE DE EXTRACCIÓN - Cédula Conexión LA Planes Nac Exc Reno (1).pdf
+================================================================================
+
+📦 PRODUCTO DETECTADO: premium
+📏 TAMAÑO: 2798 caracteres
+📄 PÁGINAS: 3
+
+================================================================================
+SECCIONES DETECTADAS
+================================================================================
+
+
+✓ PERIODOS ESPERA: 1 ocurrencias
+  1. Línea 22: Periodos de espera Cobertura básica...
+
+✓ COBERTURAS: 4 ocurrencias
+  1. Línea 22: Periodos de espera Cobertura básica...
+  2. Línea 30: Coberturas adicionales con costo...
+  3. Línea 34: Cobertura del recién nacido...
+
+✓ DEDUCIBLES: 2 ocurrencias
+  1. Línea 80: Conexión Línea Azul GNP.Deducibles...
+  2. Línea 86: Deducible de Impuestos...
+
+✓ COASEGUROS: 1 ocurrencias
+  1. Línea 74: colectiva.Coaseguro...
+
+✓ SUMAS ASEGURADAS: 3 ocurrencias
+  1. Línea 64: OmniaSuma Asegurada...
+  2. Línea 71: Suma Asegurada única...
+  3. Línea 76: Tope:...
+
+================================================================================

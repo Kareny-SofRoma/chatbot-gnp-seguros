@@ -1,0 +1,36 @@
+
+================================================================================
+REPORTE DE EXTRACCIÓN - Cédula Conexión Plan Nac Nuev Neg (2).pdf
+================================================================================
+
+📦 PRODUCTO DETECTADO: versátil
+📏 TAMAÑO: 2864 caracteres
+📄 PÁGINAS: 3
+
+================================================================================
+SECCIONES DETECTADAS
+================================================================================
+
+
+✓ PERIODOS ESPERA: 1 ocurrencias
+  1. Línea 19: Periodos de espera Cobertura básica...
+
+✓ COBERTURAS: 4 ocurrencias
+  1. Línea 19: Periodos de espera Cobertura básica...
+  2. Línea 27: Coberturas adicionales con costo...
+  3. Línea 31: Cobertura del recién nacido...
+
+✓ DEDUCIBLES: 3 ocurrencias
+  1. Línea 62: *Elegir el Deducible en exceso...
+  2. Línea 72: GNPDeducibles...
+  3. Línea 76: Deducible de Impuestos...
+
+✓ COASEGUROS: 1 ocurrencias
+  1. Línea 65: de la Póliza Colectiva.Coaseguro...
+
+✓ SUMAS ASEGURADAS: 4 ocurrencias
+  1. Línea 57: HERRAMIENTAS PARA AGENTES GNPCírculo MédicoSuma Asegurada...
+  2. Línea 60: Suma Asegurada única por...
+  3. Línea 64: la Suma Asegurada...
+
+================================================================================

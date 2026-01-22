@@ -1,0 +1,59 @@
+═══════════════════════════════════════════════════════════════
+PERIODOS DE ESPERA - PRODUCTO CONEXIÓN GNP
+═══════════════════════════════════════════════════════════════
+
+DOCUMENTO SINTÉTICO CONSOLIDADO
+
+Este documento detalla los periodos de espera aplicables al producto Conexión GNP, categorizados por tipo de tratamiento o condición médica.
+
+═══════════════════════════════════════════════════════════════
+
+SIN PERIODO DE ESPERA:
+
+- Accidentes
+- Emergencias médicas
+- Asistencias
+
+═══════════════════════════════════════════════════════════════
+
+PERIODOS DE ESPERA ESPECÍFICOS:
+
+**6 meses:**
+- Trasplante de hígado, riñón, corazón, células madre
+
+**10 meses:**
+- Complicaciones del embarazo o puerperio
+- Cobertura del recién nacido
+- Tratamientos médicos o quirúrgicos para corregir el estrabismo del recién nacido
+- Cobertura de enfermedades congénitas para nacidos fuera de la vigencia de la póliza
+
+**12 meses:**
+- Todo tipo de cáncer, excepto los considerados en el periodo de espera de 24 meses
+
+**24 meses:**
+- Circuncisión y sus complicaciones
+- Rodilla, codo, ácido-pépticos, columna vertebral, nariz, senos paranasales, amígdalas, adenoides
+- Hernias de cualquier tipo
+- Tumoraciones mamarias (benignas/malignas)
+- Padecimientos anorrectales, prostáticos, ginecológicos
+- Várices, insuficiencia del piso perineal
+- Padecimientos de la vesícula y vías biliares
+- Cataratas, litiasis renal y en vías urinarias
+- Hombro
+
+**48 meses:**
+- SIDA
+
+═══════════════════════════════════════════════════════════════
+
+CONSIDERACIONES IMPORTANTES:
+
+- Los periodos de espera se aplican desde el inicio de la vigencia de la póliza.
+- Las condiciones específicas de cada tratamiento o padecimiento deben revisarse en las Condiciones Generales del producto.
+
+═══════════════════════════════════════════════════════════════
+
+PRODUCTO: conexión gnp
+TIPO: Gastos Médicos Mayores
+CATEGORÍA: periodos_espera
+DOCUMENTO: Síntesis completa

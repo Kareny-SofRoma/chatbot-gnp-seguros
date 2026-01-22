@@ -38,6 +38,49 @@ class RAGService:
         msg_lower = message.lower().strip()
         return any(keyword in msg_lower for keyword in portal_keywords)
     
+    def _needs_comprehensive_search(self, message: str) -> bool:
+        """Detect if message needs comprehensive information (all details)"""
+        msg_lower = message.lower().strip()
+        
+        # Palabras que indican que se pregunta sobre características específicas
+        specific_feature_keywords = [
+            # Periodos y tiempos
+            'periodos de espera', 'periodo de espera', 'períodos de espera', 'período de espera',
+            'tiempo de espera', 'tiempos de espera', 'cuánto tiempo',
+            # Costos y pagos
+            'deducible', 'deducibles', 'coaseguro', 'coaseguros', 'copago', 'copagos',
+            'precio', 'precios', 'costo', 'costos', 'prima', 'primas', 'tarifa', 'tarifas',
+            # Coberturas y beneficios
+            'cobertura', 'coberturas', 'beneficio', 'beneficios', 'servicio', 'servicios',
+            'incluye', 'cubre', 'protege', 'ampara',
+            # Exclusiones y limitaciones
+            'exclusiones', 'exclusión', 'limitaciones', 'limitación', 'restricciones', 'restricción',
+            'no cubre', 'no incluye', 'excepto', 'salvo',
+            # Requisitos y documentación
+            'requisitos', 'requisito', 'documentos', 'documento', 'papeles', 'trámites', 'trámite',
+            # Listas completas
+            'lista completa', 'todos los', 'todas las', 'todo lo que', 'cuáles son todos',
+            'lista de', 'listado de', 'relación de',
+            # Condiciones
+            'condiciones', 'condición', 'cláusula', 'cláusulas', 'términos',
+            # Sumas aseguradas y límites
+            'suma asegurada', 'sumas aseguradas', 'límite', 'límites', 'tope', 'topes',
+            'monto', 'montos', 'máximo', 'máximos', 'mínimo', 'mínimos'
+        ]
+        
+        # Detectar si menciona un producto específico + alguna característica
+        productos = [
+            'versátil', 'versatil', 'premium', 'platino', 'conexión gnp',
+            'gmm', 'gastos médicos', 'vida', 'auto', 'autos', 'daños',
+            'hogar', 'mascota', 'negocio protegido', 'cyber safe'
+        ]
+        
+        has_product = any(prod in msg_lower for prod in productos)
+        has_feature = any(keyword in msg_lower for keyword in specific_feature_keywords)
+        
+        # Si pregunta sobre un producto Y una característica específica, necesita búsqueda comprehensiva
+        return has_product and has_feature
+    
     def query(
         self,
         user_query: str,
@@ -104,6 +147,13 @@ class RAGService:
             all_chunks = []
             seen_ids = set()
             
+            # Detectar si necesita búsqueda comprehensiva (más chunks)
+            chunks_per_query = 30 if self._needs_comprehensive_search(user_query) else 15
+            max_final_chunks = 35 if self._needs_comprehensive_search(user_query) else 20
+            
+            if self._needs_comprehensive_search(user_query):
+                logger.info("Comprehensive search detected - using more chunks")
+            
             try:
                 for sq in search_queries:
                     # Generate embedding
@@ -117,7 +167,7 @@ class RAGService:
                     try:
                         results = self.pinecone_service.query_vectors(
                             query_vector=query_embedding,
-                            top_k=15  # 15 por query
+                            top_k=chunks_per_query  # Dinámico según tipo de pregunta
                         )
                     except Exception as e:
                         logger.error(f"Pinecone query error: {str(e)}")
@@ -149,8 +199,8 @@ class RAGService:
                 x['score']  # Luego por score
             ), reverse=True)
             
-            # Tomar top chunks
-            top_chunks = all_chunks[:20]  # Top 20 mejores
+            # Tomar top chunks (dinámico según tipo de pregunta)
+            top_chunks = all_chunks[:max_final_chunks]
             
             if not top_chunks:
                 logger.warning("No relevant chunks found")

@@ -148,11 +148,21 @@ class RAGService:
             seen_ids = set()
             
             # Detectar si necesita búsqueda comprehensiva (más chunks)
-            chunks_per_query = 30 if self._needs_comprehensive_search(user_query) else 15
-            max_final_chunks = 35 if self._needs_comprehensive_search(user_query) else 20
-            
-            if self._needs_comprehensive_search(user_query):
-                logger.info("Comprehensive search detected - using more chunks")
+            # Para periodos de espera, usar MUCHOS más chunks porque está fragmentado
+            if 'periodo' in user_query.lower() and 'espera' in user_query.lower():
+                chunks_per_query = 50  # MÁXIMO para periodos de espera
+                max_final_chunks = 60
+                similarity_threshold = 0.30  # Aún más bajo
+                logger.info("Waiting periods question - using MAXIMUM chunks (threshold: 0.30)")
+            elif self._needs_comprehensive_search(user_query):
+                chunks_per_query = 30
+                max_final_chunks = 35
+                similarity_threshold = 0.35
+                logger.info(f"Comprehensive search detected - using more chunks (threshold: {similarity_threshold})")
+            else:
+                chunks_per_query = 15
+                max_final_chunks = 20
+                similarity_threshold = 0.45
             
             try:
                 for sq in search_queries:
@@ -174,7 +184,7 @@ class RAGService:
                         raise handle_service_error("Pinecone", e)
                     
                     for match in results.matches:
-                        if match.id not in seen_ids and match.score > 0.45:  # Threshold más bajo
+                        if match.id not in seen_ids and match.score > similarity_threshold:
                             seen_ids.add(match.id)
                             all_chunks.append({
                                 'id': match.id,
@@ -292,7 +302,7 @@ class RAGService:
         """Generate cache key"""
         normalized = query.lower().strip()
         query_hash = hashlib.md5(normalized.encode()).hexdigest()
-        return f"rag:v4:{query_hash}"  # v4 para nueva versión con búsqueda comprehensiva
+        return f"rag:v5:{query_hash}"  # v5 para periodos de espera con 60 chunks
     
     def _get_from_cache(self, cache_key: str):
         """Get from cache with error handling"""

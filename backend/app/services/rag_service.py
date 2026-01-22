@@ -292,7 +292,7 @@ class RAGService:
         """Generate cache key"""
         normalized = query.lower().strip()
         query_hash = hashlib.md5(normalized.encode()).hexdigest()
-        return f"rag:v3:{query_hash}"  # v3 para nueva versión con portales
+        return f"rag:v4:{query_hash}"  # v4 para nueva versión con búsqueda comprehensiva
     
     def _get_from_cache(self, cache_key: str):
         """Get from cache with error handling"""

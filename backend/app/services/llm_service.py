@@ -303,7 +303,7 @@ Para rehabilitar una póliza se requiere:
 - Responde directamente con el contenido, siguiendo el formato indicado"""
 
         if context and len(context) > 50:
-            base_prompt += f"\n\n{'='*80}\n📚 INFORMACIÓN DE MANUALES GNP:\n{'='*80}\n\n{context}\n\n{'='*80}\n\n⚠️ Usa esta información siguiendo EXACTAMENTE las guías de formato de arriba. NUNCA menciones 'TEMPLATE' en tu respuesta."
+            base_prompt += f"\n\n{'='*80}\n📚 INFORMACIÓN DE MANUALES GNP:\n{'='*80}\n\n{context}\n\n{'='*80}\n\n⚠️ Usa esta información siguiendo EXACTAMENTE las guías de formato de arriba. NUNCA menciones 'TEMPLATE' en tu respuesta.\n\n💡 Si la información parece incompleta o el usuario pregunta por detalles específicos que no encuentras, SIEMPRE agrega al final: '\n\n¿Necesitas información más específica sobre algún punto en particular? Puedes hacer una pregunta más detallada y con gusto te ayudo.'"
         else:
             base_prompt += f"\n\n{'='*80}\n📚 CONTEXTO: [VACÍO]\n{'='*80}\n\nResponde: Lo siento, no encontré información sobre esa pregunta en los manuales de GNP."
         

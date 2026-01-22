@@ -150,10 +150,10 @@ class RAGService:
             # Detectar si necesita búsqueda comprehensiva (más chunks)
             # Para periodos de espera, usar MUCHOS más chunks porque está fragmentado
             if 'periodo' in user_query.lower() and 'espera' in user_query.lower():
-                chunks_per_query = 50  # MÁXIMO para periodos de espera
-                max_final_chunks = 60
-                similarity_threshold = 0.30  # Aún más bajo
-                logger.info("Waiting periods question - using MAXIMUM chunks (threshold: 0.30)")
+                chunks_per_query = 60  # MÁXIMO para periodos de espera
+                max_final_chunks = 80
+                similarity_threshold = 0.25  # Muy bajo para capturar todo
+                logger.info("Waiting periods question - using MAXIMUM chunks (threshold: 0.25)")
             elif self._needs_comprehensive_search(user_query):
                 chunks_per_query = 30
                 max_final_chunks = 35
@@ -302,7 +302,7 @@ class RAGService:
         """Generate cache key"""
         normalized = query.lower().strip()
         query_hash = hashlib.md5(normalized.encode()).hexdigest()
-        return f"rag:v5:{query_hash}"  # v5 para periodos de espera con 60 chunks
+        return f"rag:v6:{query_hash}"  # v6 para 80 chunks en periodos de espera + mensaje de follow-up
     
     def _get_from_cache(self, cache_key: str):
         """Get from cache with error handling"""

@@ -302,7 +302,7 @@ class RAGService:
         """Generate cache key"""
         normalized = query.lower().strip()
         query_hash = hashlib.md5(normalized.encode()).hexdigest()
-        return f"rag:v6:{query_hash}"  # v6 para 80 chunks en periodos de espera + mensaje de follow-up
+        return f"rag:v7:{query_hash}"  # v7 con documentos sintéticos de todos los productos
     
     def _get_from_cache(self, cache_key: str):
         """Get from cache with error handling"""
